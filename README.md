@@ -1,6 +1,6 @@
 # TrialTask – Solana Frontend
 
-A TypeScript + Next.js frontend demonstrating Solana wallet integration, real-time token feed, and SOL transfers. Built as part of a frontend task .
+A TypeScript + Next.js frontend demonstrating Solana wallet integration, real-time token feed, and SOL transfers. Built as part of a frontend task.
 
 ## Features Implemented
 
@@ -37,8 +37,10 @@ cd trialtask
 npm install
 npm run dev
 ```
-Run the Golang backend
-Open http://localhost:3000
+Run the Golang backend.
+
+Open http://localhost:3000 in your browser.
+
 
 All transactions run on Solana Devnet for testing.
 git clone https://github.com/Vpb123/trialtask.git
