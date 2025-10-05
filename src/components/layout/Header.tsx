@@ -22,7 +22,6 @@ export default function Header() {
           </Button>
         </Link>
 
-        {/* Wallet connect placeholder */}
         <WalletStatus />
       </nav>
     </header>

@@ -13,7 +13,6 @@ export default function CosmoPage() {
           </p>
         </header>
 
-        {/* Token Feed */}
         <TokenFeed />
       </div>
     </main>
