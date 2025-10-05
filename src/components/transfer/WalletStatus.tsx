@@ -2,11 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
-import { usePhantom } from '@/hooks/usePhantom';
+import { useWallet } from '@/providers/WalletProvider';
 
 export const WalletStatus = () => {
-  const { publicKey, isConnected, connectWallet, disconnectWallet, isPhantomInstalled } = usePhantom();
-
+const { publicKey, isConnected, connectWallet, disconnectWallet, isPhantomInstalled } = useWallet();
   if (!isPhantomInstalled) {
     return (
       <Button variant="destructive" size="sm" onClick={() => window.open('https://phantom.app/', '_blank')}>
