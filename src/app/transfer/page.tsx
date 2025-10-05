@@ -3,7 +3,8 @@
 import { TransferForm } from '@/components/transfer/TransferForm';
 import { useWallet } from '@/providers/WalletProvider';
 import { Button } from '@/components/ui/button';
-
+import { Copy } from 'lucide-react';
+import { toast } from 'sonner';
 export const TransferPage = () => {
   const { publicKey, isConnected, connectWallet } = useWallet();
 
@@ -15,11 +16,26 @@ export const TransferPage = () => {
             isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-500 animate-pulse'
           }`}
         />
-        <span className="text-gray-300 text-sm">
-          {isConnected
-            ? `Connected: ${publicKey?.toString().slice(0, 4)}...${publicKey?.toString().slice(-4)}`
-            : 'Wallet not connected'}
-        </span>
+    <span className="flex items-center space-x-2 text-gray-300 text-sm">
+  {isConnected && publicKey ? (
+    <>
+      <span>{publicKey.toString()}</span>
+      <Button
+        size="sm"
+        variant="ghost"
+        className="p-1"
+        onClick={() => {
+          navigator.clipboard.writeText(publicKey.toString());
+          toast('Wallet address copied!'); 
+        }}
+      >
+        <Copy className="w-4 h-4" />
+      </Button>
+    </>
+  ) : (
+    'Wallet not connected'
+  )}
+</span>
         {!isConnected && (
           <Button size="sm" variant="default" onClick={connectWallet}>
             Connect
