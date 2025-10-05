@@ -8,8 +8,8 @@ export interface TokenEvent {
   uri: string;
   mint: string;
 }
-
-export const useTokenFeed = (wsUrl: string = 'ws://127.0.0.1:8080/connect') => {
+const webSocketUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://127.0.0.1:8080/connect';
+export const useTokenFeed = (wsUrl: string = webSocketUrl) => {
   const [tokens, setTokens] = useState<TokenEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
