@@ -1,7 +1,6 @@
 'use client';
 
 import { TokenFeed } from '@/components/cosmo/TokenFeed';
-import { Card } from '@/components/ui/card';
 
 export default function CosmoPage() {
   return (

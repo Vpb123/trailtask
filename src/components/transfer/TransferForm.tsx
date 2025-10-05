@@ -27,7 +27,6 @@ export const TransferForm = () => {
   const onSubmit = async (data: TransferFormData) => {
     try {
       await transferSol({ toAddress: data.to, amount: data.amount });
-      toast.success('Transaction sent successfully!');
     } catch {
       toast.error('Transaction failed');
     }

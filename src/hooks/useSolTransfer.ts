@@ -1,7 +1,13 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { PublicKey, Transaction, SystemProgram, Connection, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import {
+  PublicKey,
+  Transaction,
+  SystemProgram,
+  Connection,
+  LAMPORTS_PER_SOL,
+} from '@solana/web3.js';
 import { toast } from 'sonner';
 
 interface TransferParams {
@@ -31,33 +37,38 @@ export const useSolTransfer = (): UseSolTransferReturn => {
       setIsTransferring(true);
       setError(null);
 
-      // Validate recipient
-      let recipientPubKey: PublicKey;
-      try {
-        recipientPubKey = new PublicKey(toAddress);
-      } catch {
-        throw new Error('Invalid wallet address');
-      }
+      const connection = new Connection(DEVNET_RPC, 'confirmed');
 
-      const connection = new Connection(DEVNET_RPC);
+      const recipientPubKey = new PublicKey(toAddress);
 
-      // Convert SOL to lamports
+      const senderPubKey = window.solana.publicKey;
+
       const lamports = Math.round(amount * LAMPORTS_PER_SOL);
 
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+
       // Build transaction
-      const transaction = new Transaction().add(
+      const transaction = new Transaction({
+        recentBlockhash: blockhash,
+        feePayer: senderPubKey,
+      }).add(
         SystemProgram.transfer({
-          fromPubkey: window.solana.publicKey,
+          fromPubkey: senderPubKey,
           toPubkey: recipientPubKey,
           lamports,
         })
       );
 
-      // Request Phantom to sign the transaction
-      const { signature } = await window.solana.signAndSendTransaction(transaction);
+      const signedTx = await window.solana.signAndSendTransaction(transaction);
 
-      // Confirm transaction
-      await connection.confirmTransaction(signature, 'confirmed');
+      await connection.confirmTransaction(
+        {
+          signature: signedTx.signature,
+          blockhash,
+          lastValidBlockHeight,
+        },
+        'confirmed'
+      );
 
       toast.success(`Successfully sent ${amount} SOL to ${toAddress}`);
     } catch (err: unknown) {
